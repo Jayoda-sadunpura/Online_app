@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>බාගත කරගන්නා ආකාරය</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: sans-serif;
+            text-align: center;
+        }
+        
+        #backButton {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 5px 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        
+        .step {
+            margin-bottom: 20px;
+            max-width: 80%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .image-container {
+            margin: 10px;
+            width: 400px;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .image-frame {
+            border: 5px solid #000;
+            padding: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            /* Important: Set width to 100% */
+            height: 100%;
+            /* Important: Set height to 100% */
+            object-fit: contain;
+            /* Use contain to maintain aspect ratio */
+            display: block;
+        }
+        
+        .step img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+        
+        .image-description {
+            margin-top: 5px;
+            font-style: italic;
+            width: 400px;
+            text-align: center;
+        }
+        
+        .video-button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            text-decoration: none;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: fit-content;
+        }
+        
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="backButton">Back</button>
+    <h1>බාගත කරගන්නා ආකාරය</h1>
+
+    <a href="YOUR_YOUTUBE_VIDEO_LINK" class="video-button" target="_blank">මෙම පිලිබදව video පටය නරබන්න</a>
+
+    <div class="step">
+        <h2>Android</h2>
+        <div class="image-container">
+            <img class="image-frame" src="image A1.jpg" alt="Android Step 1">
+        </div>
+        <div class="image-description">මුලින්ම ඉහත පරිදි මෙම "බාගත කරන්න" Button එක මත ක්ලික් කරන්න.</div>
+
+        <div class="image-container">
+            <img class="image-frame" src="Image A2.jpg" alt="Android Step 2">
+        </div>
+        <div class="image-description">මීලගට ඉහත පරිදි Install බටන් එක මත ක්ලික් කරන්න</div>
+
+        <div class="image-container">
+            <img class="image-frame" src="Image A3.jpg" alt="Android Step 3">
+        </div>
+        <div class="image-description">මීලගට ඔබ මෙනුවේ ඉහත පරිදි යටම මෙය දිස් වේ . මැතැන් සිට මද වේලාවක් රැදී සිටින්න</div>
+
+        <div class="image-container">
+            <img class="image-frame" src="Image A4.jpg" alt="Android Step 4">
+        </div>
+        <div class="image-description">මද වේලවකට පසු ඉහත පරිදි දිස් වේ , මෙලෙස දිස් ඌ පසුව මෙය මත ක්ලික් කර ඔබ බාගත කල යෙදුමට පිවිසෙන්න , මෙතැන් සිට මෙය ඔබ දුරකතනයේ මුල දිස්වේ </div>
+    </div>
+
+    <div class="step">
+        <h2>iOS</h2>
+        <div class="image-container">
+            <img class="image-frame" src="YOUR_IOS_STEP_1_IMAGE_URL" alt="iOS Step 1">
+        </div>
+        <div class="image-description">ඔබගේ iOS උපාංගයේ මුල් තිරයේ ඇති Safari බ්‍රව්සරය විවෘත කරන්න.</div>
+        <div class="image-container">
+            <img class="image-frame" src="YOUR_IOS_STEP_2_IMAGE_URL" alt="iOS Step 2">
+        </div>
+        <div class="image-description">පහල පෙනෙන share icon එක click කරන්න.</div>
+    </div>
+    <a href="YOUR_YOUTUBE_VIDEO_LINK" class="video-button" target="_blank">මෙම පිලිබදව video පටය නරබන්න</a>
+
+    <script>
+        const backButton = document.getElementById('backButton');
+        backButton.addEventListener('click', () => {
+            window.history.back();
+        });
+    </script>
+</body>
+
+</html>
