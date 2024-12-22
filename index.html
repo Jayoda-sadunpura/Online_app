@@ -12,21 +12,46 @@
   <link rel="icon" href="icon-192x192.png" sizes="192x192">
   <link rel="icon" href="icon-512x512.png" sizes="512x512">
 
+  <style>
+    /* Add some styling to the "Add to Home Screen" button */
+    #add-to-home-screen {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      display: none; /* Initially hidden */
+    }
+    #add-to-home-screen:active {
+      background-color: #0056b3;
+    }
+  </style>
+
+</head>
+<body>
+  <h1>Welcome to ජයෝදා රියදුරු පාසල</h1>
+  
+  <!-- Add to Home Screen Button -->
+  <button id="add-to-home-screen">Add to Home Screen</button>
+
   <script>
     // Check if the browser supports PWA features
     if ('serviceWorker' in navigator && 'BeforeInstallPromptEvent' in window) {
       let deferredPrompt;
-      const addBtn = document.createElement('button');
-      addBtn.textContent = 'Add to Home Screen';
-      document.body.appendChild(addBtn);
-
+      const addBtn = document.getElementById('add-to-home-screen');
+      
+      // Show the "Add to Home Screen" button when ready
       window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        addBtn.style.display = 'block';
+        addBtn.style.display = 'block'; // Show the button
 
+        // When the user clicks the button
         addBtn.addEventListener('click', () => {
-          deferredPrompt.prompt();
+          deferredPrompt.prompt(); // Show the install prompt
+          
           deferredPrompt.userChoice.then((choiceResult) => {
             if (choiceResult.outcome === 'accepted') {
               console.log('User added to home screen');
@@ -39,8 +64,5 @@
       });
     }
   </script>
-</head>
-<body>
-  <h1>Welcome to ජයෝදා රියදුරු පාසල</h1>
 </body>
 </html>
