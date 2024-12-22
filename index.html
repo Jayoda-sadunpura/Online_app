@@ -12,11 +12,13 @@
         body {
             margin: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             background-color: #f3f4f6;
             font-family: Arial, sans-serif;
+            text-align: center;
         }
 
         #addToHomeScreen {
@@ -28,10 +30,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            margin-top: 20px;
         }
 
         iframe {
@@ -40,18 +39,29 @@
             border: none;
             display: none;
         }
+
+        #instructions {
+            display: none;
+            color: #333;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
+    <h1>ජයෝදා රියදුරු පාසල</h1>
     <button id="addToHomeScreen">Add to Home Screen</button>
+    <div id="instructions">
+        <p>On iOS, please use Safari's "Share" button and select "Add to Home Screen".</p>
+    </div>
     <iframe id="webApp" src="https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs"></iframe>
 
     <script>
         let deferredPrompt;
         const addToHomeScreenButton = document.getElementById('addToHomeScreen');
+        const instructions = document.getElementById('instructions');
         const iframe = document.getElementById('webApp');
 
-        // Listen for beforeinstallprompt
+        // Listen for the 'beforeinstallprompt' event (Android/Windows)
         window.addEventListener('beforeinstallprompt', (event) => {
             console.log('beforeinstallprompt event detected');
             event.preventDefault();
@@ -59,13 +69,11 @@
             addToHomeScreenButton.style.display = 'block';
         });
 
-        // Handle the Add to Home Screen button click
+        // Handle A2HS button click
         addToHomeScreenButton.addEventListener('click', () => {
-            console.log('Add to Home Screen button clicked');
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
-                    console.log('User choice:', choiceResult.outcome);
                     if (choiceResult.outcome === 'accepted') {
                         console.log('User accepted the A2HS prompt');
                         addToHomeScreenButton.style.display = 'none';
@@ -76,18 +84,18 @@
                     deferredPrompt = null;
                 });
             } else {
-                console.log('deferredPrompt not available');
-                alert('This browser does not support Add to Home Screen.');
+                alert('Add to Home Screen is not supported on this device.');
             }
         });
 
-        // Detect if it's iOS
-        if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+        // Detect iOS Safari and show instructions
+        if (/iPhone|iPad|iPod/.test(navigator.userAgent) && navigator.userAgent.includes('Safari')) {
             console.log('Detected Safari on iOS');
-            addToHomeScreenButton.textContent = 'Add to Home Screen (Use Share)';
+            instructions.style.display = 'block';
         } else {
-            console.log('Not an iOS device');
+            console.log('Not iOS Safari');
         }
     </script>
 </body>
 </html>
+
