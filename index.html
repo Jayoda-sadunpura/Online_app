@@ -67,6 +67,11 @@
             });
         });
 
+        // Redirect to the specific URL after being added to home screen
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            window.location.href = "https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs";
+        }
+
         // Hide the button if the PWA is already installed
         window.addEventListener('appinstalled', () => {
             const addToHomeScreenButton = document.getElementById('addToHomeScreen');
@@ -76,3 +81,4 @@
     </script>
 </body>
 </html>
+
