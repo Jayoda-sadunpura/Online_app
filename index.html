@@ -1,54 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ජයෝදා රියදුරු පාසල</title>
+    <!-- Meta for PWA -->
     <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
     <style>
-        /* Basic styling */
-        
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
             margin: 0;
-            padding: 0;
-            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f7f7f7;
+            height: 100vh;
+            background-color: #f3f4f6;
+            font-family: Arial, sans-serif;
         }
-        /* Add to Home Screen button styling */
-        
-        button {
-            padding: 15px 30px;
-            font-size: 18px;
+
+        #addToHomeScreen {
+            display: none;
+            padding: 10px 20px;
             background-color: #007bff;
             color: white;
+            font-size: 18px;
             border: none;
-            border-radius: 8px;
+            border-radius: 5px;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
         }
-        
-        button:hover {
-            background-color: #0056b3;
-        }
-        /* Hidden iframe styling */
-        
+
         iframe {
-            display: none;
             width: 100%;
-            height: 100vh;
+            height: 100%;
             border: none;
+            display: none;
         }
     </style>
 </head>
-
 <body>
-    <h1>ජයෝදා රියදුරු පාසල</h1>
     <button id="addToHomeScreen">Add to Home Screen</button>
     <iframe id="webApp" src="https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs"></iframe>
 
@@ -57,40 +51,43 @@
         const addToHomeScreenButton = document.getElementById('addToHomeScreen');
         const iframe = document.getElementById('webApp');
 
-        // Listen for the beforeinstallprompt event (For Android and Windows)
+        // Listen for beforeinstallprompt
         window.addEventListener('beforeinstallprompt', (event) => {
-            event.preventDefault(); // Prevent automatic prompt
-            deferredPrompt = event; // Save the event for later use
-            addToHomeScreenButton.style.display = 'block'; // Show the button
+            console.log('beforeinstallprompt event detected');
+            event.preventDefault();
+            deferredPrompt = event;
+            addToHomeScreenButton.style.display = 'block';
         });
 
-        // Handle Add to Home Screen button click
+        // Handle the Add to Home Screen button click
         addToHomeScreenButton.addEventListener('click', () => {
+            console.log('Add to Home Screen button clicked');
             if (deferredPrompt) {
-                deferredPrompt.prompt(); // Show the install prompt
+                deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
+                    console.log('User choice:', choiceResult.outcome);
                     if (choiceResult.outcome === 'accepted') {
                         console.log('User accepted the A2HS prompt');
-                        // Load the Thunkable Web App after successful installation
                         addToHomeScreenButton.style.display = 'none';
                         iframe.style.display = 'block';
                     } else {
                         console.log('User dismissed the A2HS prompt');
                     }
-                    deferredPrompt = null; // Clear the prompt
+                    deferredPrompt = null;
                 });
-            } else if (navigator.userAgent.includes('Safari') && !deferredPrompt) {
-                alert('On iOS, please use Safari’s "Share" button and select "Add to Home Screen".');
             } else {
-                alert('Add to Home Screen is not supported on this browser.');
+                console.log('deferredPrompt not available');
+                alert('This browser does not support Add to Home Screen.');
             }
         });
 
-        // Detect device and adjust instructions
+        // Detect if it's iOS
         if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+            console.log('Detected Safari on iOS');
             addToHomeScreenButton.textContent = 'Add to Home Screen (Use Share)';
+        } else {
+            console.log('Not an iOS device');
         }
     </script>
 </body>
-
 </html>
