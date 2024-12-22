@@ -1,8 +1,8 @@
 {
   "name": "ජයෝදා රියදුරු පාසල",
   "short_name": "ජයෝදා",
-  "start_url": "https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs", // මෙතන ඔයාගේ වෙබ් අඩවියේ link එක
-  "display": "standalone", // මේකෙන් web app එක browser එකේ tab එකක open නොවී standalone app එකක් විදිහට open වෙනවා
+  "start_url": "https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs",
+  "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#007bff",
   "icons": [
