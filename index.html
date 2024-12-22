@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>ජයෝදා රියදුරු පාසල</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192x192.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <style>
         body {
             margin: 0;
+            text-align: center; /* Center the instruction text */
+            padding-top: 20px; /* Add some top padding */
         }
-        
-        #addToHomeScreen {
+         #addToHomeScreen {
             position: fixed;
-            bottom: 170px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             background-color: #007bff;
@@ -23,7 +25,7 @@
             cursor: pointer;
             z-index: 1000;
         }
-        
+
         @media all and (display-mode: standalone) {
             #addToHomeScreen {
                 display: none;
@@ -31,16 +33,20 @@
         }
     </style>
 </head>
-
 <body>
     <div id="addToHomeScreen">Add to Home Screen</div>
+    <div id="iosInstructions" style="display: none;">
+        To add this to your Home Screen on your iPhone/iPad:<br>
+        1. Tap the Share icon (box with an upward arrow).<br>
+        2. Select "Add to Home Screen".
+    </div>
 
     <script>
-        let deferredPrompt;
-        const addToHomeScreenButton = document.getElementById('addToHomeScreen');
-        const thunkableLink = "https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs"; // Store the link in a variable
+        const thunkableLink = "https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs";
+        const iosInstructions = document.getElementById('iosInstructions');
+         const addToHomeScreenButton = document.getElementById('addToHomeScreen');
 
-        window.addEventListener('beforeinstallprompt', (e) => {
+         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
 
@@ -59,22 +65,20 @@
             });
         });
 
+
+        if (navigator.userAgent.match(/iPad|iPhone|iPod/i)) {
+            iosInstructions.style.display = 'block';
+        }
+
         if (window.matchMedia('(display-mode: standalone)').matches) {
-            window.location.href = thunkableLink; // Redirect when in standalone mode
+            window.location.href = thunkableLink;
         }
 
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js')
-                    .then(registration => {
-                        console.log('Service Worker registered with scope:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.error('Service Worker registration failed:', error);
-                    });
+                navigator.serviceWorker.register('/service-worker.js');
             });
         }
     </script>
 </body>
-
 </html>
