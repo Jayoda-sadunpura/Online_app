@@ -1,15 +1,28 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>ජයෝදා රියදුරු පාසල</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192x192.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        #addToHomeScreen {
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        iframe {
+            width: 100vw;
+            height: 100vh;
+            border: none;
             display: none;
+            /* Initially hidden */
+        }
+        
+        #addToHomeScreen {
             position: fixed;
-            bottom: 20px;
+            bottom: 170px;
             left: 50%;
             transform: translateX(-50%);
             background-color: #007bff;
@@ -17,42 +30,88 @@
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
+            z-index: 1000;
+        }
+        
+        #loading {
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
+
 <body>
-    <h1>Loading...</h1>
+    <div id="loading">
+        <div class="loader"></div>
+    </div>
     <div id="addToHomeScreen">Add to Home Screen</div>
+    <iframe id="thunkableFrame" src="https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs"></iframe>
+
     <script>
         let deferredPrompt;
-        const addBtn = document.getElementById('addToHomeScreen');
+        const addToHomeScreenButton = document.getElementById('addToHomeScreen');
+        const thunkableFrame = document.getElementById('thunkableFrame');
+        const loading = document.getElementById('loading');
+
+        thunkableFrame.onload = function() {
+            loading.style.display = "none";
+        }
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            addBtn.style.display = 'block';
 
-            addBtn.addEventListener('click', (e) => {
-                addBtn.style.display = 'none';
+            addToHomeScreenButton.addEventListener('click', () => {
+                addToHomeScreenButton.style.display = 'none';
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
                         console.log('User accepted the A2HS prompt');
+                        // Load the iframe after a delay
+                        setTimeout(() => {
+                            thunkableFrame.style.display = 'block';
+                        }, 1000); // 1 second delay
                     } else {
                         console.log('User dismissed the A2HS prompt');
+                        // Optionally, handle the dismissal (e.g., show a message)
                     }
                     deferredPrompt = null;
-                    // Redirect after prompt (optional)
-                    window.location.href = "https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs";
                 });
             });
         });
-        // Redirect if not PWA supported
-        if (!window.matchMedia('(display-mode: standalone)').matches)
-        {
-          window.location.href = "https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs";
-        }
 
+        // If it's already standalone, load the iframe immediately
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            thunkableFrame.style.display = 'block';
+        }
     </script>
 </body>
+
 </html>
