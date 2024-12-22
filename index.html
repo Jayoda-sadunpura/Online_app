@@ -9,14 +9,6 @@
     <style>
         body {
             margin: 0;
-            overflow: hidden;
-        }
-        
-        iframe {
-            width: 100vw;
-            height: 100vh;
-            border: none;
-            display: none;
         }
         
         #addToHomeScreen {
@@ -42,12 +34,11 @@
 
 <body>
     <div id="addToHomeScreen">Add to Home Screen</div>
-    <iframe id="thunkableFrame" src="https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs"></iframe>
 
     <script>
         let deferredPrompt;
         const addToHomeScreenButton = document.getElementById('addToHomeScreen');
-        const thunkableFrame = document.getElementById('thunkableFrame');
+        const thunkableLink = "https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs"; // Store the link in a variable
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -59,10 +50,9 @@
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
                         console.log('User accepted the A2HS prompt');
-                        thunkableFrame.style.display = 'block'; // Show iframe immediately
                     } else {
                         console.log('User dismissed the A2HS prompt');
-                        addToHomeScreenButton.style.display = 'block'; // Show button if dismissed
+                        addToHomeScreenButton.style.display = 'block';
                     }
                     deferredPrompt = null;
                 });
@@ -70,7 +60,7 @@
         });
 
         if (window.matchMedia('(display-mode: standalone)').matches) {
-            thunkableFrame.style.display = 'block';
+            window.location.href = thunkableLink; // Redirect when in standalone mode
         }
 
         if ('serviceWorker' in navigator) {
