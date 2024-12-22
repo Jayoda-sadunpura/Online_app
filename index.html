@@ -21,28 +21,36 @@
             text-align: center;
         }
 
+        h1 {
+            color: #007bff;
+        }
+
         button {
-            display: none;
-            padding: 10px 20px;
+            margin-top: 20px;
+            padding: 15px 25px;
             background-color: #007bff;
             color: white;
             font-size: 18px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            display: none;
         }
 
         #iosInstructions {
-            display: none;
+            margin-top: 20px;
             font-size: 16px;
             color: #333;
+            display: none;
         }
     </style>
 </head>
 <body>
     <h1>ජයෝදා රියදුරු පාසල</h1>
     <button id="a2hsButton">Add to Home Screen</button>
-    <div id="iosInstructions">Use Safari's "Share" button and select "Add to Home Screen".</div>
+    <div id="iosInstructions">
+        iOS භාවිතා කරන අය Safari වලින් "Share" බොටම ඔබා "Add to Home Screen" තෝරන්න.
+    </div>
 
     <script>
         let deferredPrompt;
@@ -51,26 +59,30 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
+
             const a2hsButton = document.getElementById('a2hsButton');
-            a2hsButton.style.display = 'block';
+            a2hsButton.style.display = 'block'; // Show the button
 
             a2hsButton.addEventListener('click', () => {
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
-                        console.log('User added to home screen');
+                        console.log('User accepted the Add to Home Screen prompt');
+                    } else {
+                        console.log('User dismissed the Add to Home Screen prompt');
                     }
                     deferredPrompt = null;
                 });
             });
         });
 
-        // Show iOS instructions
+        // Show iOS specific instructions
         const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) && navigator.userAgent.includes('Safari');
         if (isIOS) {
-            document.getElementById('iosInstructions').style.display = 'block';
+            document.getElementById('iosInstructions').style.display = 'block'; // Show iOS instructions
         }
     </script>
 </body>
 </html>
+
 
