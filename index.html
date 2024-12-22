@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Redirecting...</title>
+    <title>ජයෝදා රියදුරු පාසල</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192x192.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         #addToHomeScreen {
-            display: none; /* Initially hidden */
+            display: none;
             position: fixed;
             bottom: 20px;
             left: 50%;
@@ -21,7 +21,8 @@
     </style>
 </head>
 <body>
-    <h1>Loading...</h1> <div id="addToHomeScreen">Add to Home Screen</div>
+    <h1>Loading...</h1>
+    <div id="addToHomeScreen">Add to Home Screen</div>
     <script>
         let deferredPrompt;
         const addBtn = document.getElementById('addToHomeScreen');
@@ -41,12 +42,16 @@
                         console.log('User dismissed the A2HS prompt');
                     }
                     deferredPrompt = null;
+                    // Redirect after prompt (optional)
                     window.location.href = "https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs";
                 });
             });
         });
-
-        window.location.href = "https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs";
+        // Redirect if not PWA supported
+        if (!window.matchMedia('(display-mode: standalone)').matches)
+        {
+          window.location.href = "https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs";
+        }
 
     </script>
 </body>
