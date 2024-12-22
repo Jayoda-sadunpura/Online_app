@@ -32,44 +32,15 @@
             z-index: 1000;
         }
         
-        #loading {
-            position: fixed;
-            z-index: 999;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: visible;
-            background: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .loader {
-            border: 16px solid #f3f3f3;
-            border-top: 16px solid #3498db;
-            border-radius: 50%;
-            width: 120px;
-            height: 120px;
-            animation: spin 2s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
+        @media all and (display-mode: standalone) {
+            #addToHomeScreen {
+                display: none;
             }
         }
     </style>
 </head>
 
 <body>
-    <div id="loading">
-        <div class="loader"></div>
-    </div>
     <div id="addToHomeScreen">Add to Home Screen</div>
     <iframe id="thunkableFrame" src="https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs"></iframe>
 
@@ -77,11 +48,6 @@
         let deferredPrompt;
         const addToHomeScreenButton = document.getElementById('addToHomeScreen');
         const thunkableFrame = document.getElementById('thunkableFrame');
-        const loading = document.getElementById('loading');
-
-        thunkableFrame.onload = function() {
-            loading.style.display = "none";
-        }
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -93,11 +59,10 @@
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
                         console.log('User accepted the A2HS prompt');
-                        setTimeout(() => {
-                            thunkableFrame.style.display = 'block';
-                        }, 1000);
+                        thunkableFrame.style.display = 'block'; // Show iframe immediately
                     } else {
                         console.log('User dismissed the A2HS prompt');
+                        addToHomeScreenButton.style.display = 'block'; // Show button if dismissed
                     }
                     deferredPrompt = null;
                 });
