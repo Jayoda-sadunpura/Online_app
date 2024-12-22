@@ -17,12 +17,11 @@
             height: 100vh;
             border: none;
             display: none;
-            /* Initially hidden */
         }
         
         #addToHomeScreen {
             position: fixed;
-            bottom: 170px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             background-color: #007bff;
@@ -94,22 +93,31 @@
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
                         console.log('User accepted the A2HS prompt');
-                        // Load the iframe after a delay
                         setTimeout(() => {
                             thunkableFrame.style.display = 'block';
-                        }, 1000); // 1 second delay
+                        }, 1000);
                     } else {
                         console.log('User dismissed the A2HS prompt');
-                        // Optionally, handle the dismissal (e.g., show a message)
                     }
                     deferredPrompt = null;
                 });
             });
         });
 
-        // If it's already standalone, load the iframe immediately
         if (window.matchMedia('(display-mode: standalone)').matches) {
             thunkableFrame.style.display = 'block';
+        }
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            });
         }
     </script>
 </body>
