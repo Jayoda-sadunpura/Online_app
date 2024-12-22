@@ -50,16 +50,16 @@
 
     // Service Worker Registration
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js') // Path එක හරියට දෙන්න
-          .then((registration) => {
-            console.log('Service Worker registered:', registration);
-          })
-          .catch((error) => {
-            console.error('Service Worker registration failed:', error);
-          });
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/Add-to-Home-Screen/service-worker.js') // මෙතන path එක වෙනස් කරන්න
+      .then((registration) => {
+        console.log('Service Worker registered:', registration);
+      })
+      .catch((error) => {
+        console.error('Service Worker registration failed:', error);
       });
-    }
+  });
+}
   </script>
 </body>
 </html>
