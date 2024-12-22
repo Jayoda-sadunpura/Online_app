@@ -10,10 +10,10 @@
     <style>
         body {
             margin: 0;
-            text-align: center; /* Center the instruction text */
-            padding-top: 20px; /* Add some top padding */
+            text-align: center;
+            padding-top: 20px;
         }
-         #addToHomeScreen {
+        #addToHomeScreen {
             position: fixed;
             bottom: 20px;
             left: 50%;
@@ -34,21 +34,24 @@
     </style>
 </head>
 <body>
-    <div id="addToHomeScreen">Add to Home Screen</div>
+    <button id="addToHomeScreen">බාගත කරන්න</button>
     <div id="iosInstructions" style="display: none;">
-        To add this to your Home Screen on your iPhone/iPad:<br>
-        1. Tap the Share icon (box with an upward arrow).<br>
-        2. Select "Add to Home Screen".
+        ඔබගේ iPhone/iPad එකේ Home Screen එකට මෙය එක් කිරීමට:<br>
+        1. Share icon එක (ඉහළට ඊතලයක් සහිත කොටුව) tap කරන්න.<br>
+        2. "Add to Home Screen" තෝරන්න.
     </div>
 
     <script>
         const thunkableLink = "https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs";
         const iosInstructions = document.getElementById('iosInstructions');
-         const addToHomeScreenButton = document.getElementById('addToHomeScreen');
+        const addToHomeScreenButton = document.getElementById('addToHomeScreen');
 
-         window.addEventListener('beforeinstallprompt', (e) => {
+        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
+            addToHomeScreenButton.style.display = 'block'; // Show the button when prompt is available
 
             addToHomeScreenButton.addEventListener('click', () => {
                 addToHomeScreenButton.style.display = 'none';
@@ -68,6 +71,7 @@
 
         if (navigator.userAgent.match(/iPad|iPhone|iPod/i)) {
             iosInstructions.style.display = 'block';
+            addToHomeScreenButton.style.display = 'none'; // Hide the button on iOS
         }
 
         if (window.matchMedia('(display-mode: standalone)').matches) {
