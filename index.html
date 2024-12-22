@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>ජයෝදා රියදුරු පාසල</title>
     <link rel="manifest" href="manifest.json">
@@ -11,67 +12,83 @@
         body {
             margin: 0;
             text-align: center;
+            /* Center all content */
             padding-top: 20px;
+            font-family: sans-serif;
+            display: flex;
+            /* Use flexbox for vertical centering */
+            flex-direction: column;
+            align-items: center;
+            /* Center horizontally */
         }
+        
+        #appIcon {
+            width: 100px;
+            /* Adjust size as needed */
+            height: 100px;
+            margin-bottom: 10px;
+        }
+        
+        #appTitle {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        #instructions {
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
+        
         #addToHomeScreen {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
             background-color: #007bff;
             color: white;
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
-            z-index: 1000;
         }
-
+        
         @media all and (display-mode: standalone) {
-            #addToHomeScreen {
+            #addToHomeScreen,
+            #instructions {
                 display: none;
             }
         }
     </style>
 </head>
+
 <body>
+    <img id="appIcon" src="icon-192x192.png" alt="App Icon">
+    <h1 id="appTitle">ජයෝදා රියදුරු පාසල</h1>
+    <div id="instructions">
+        පහත "බාගත කරන්න" button එක එබීමෙන් මෙම වෙබ් යෙදුම ඔබගේ උපාංගයේ Home Screen එකට එක් කරගත හැක.
+    </div>
     <button id="addToHomeScreen">බාගත කරන්න</button>
     <div id="iosInstructions" style="display: none;">
-        ඔබගේ iPhone/iPad එකේ Home Screen එකට මෙය එක් කිරීමට:<br>
-        1. Share icon එක (ඉහළට ඊතලයක් සහිත කොටුව) tap කරන්න.<br>
-        2. "Add to Home Screen" තෝරන්න.
+        ඔබගේ iPhone/iPad එකේ Home Screen එකට මෙය එක් කිරීමට:<br> 1. Share icon එක (ඉහළට ඊතලයක් සහිත කොටුව) tap කරන්න.<br> 2. "Add to Home Screen" තෝරන්න.
     </div>
 
     <script>
         const thunkableLink = "https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs";
         const iosInstructions = document.getElementById('iosInstructions');
         const addToHomeScreenButton = document.getElementById('addToHomeScreen');
-
         let deferredPrompt;
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            addToHomeScreenButton.style.display = 'block'; // Show the button when prompt is available
-
+            addToHomeScreenButton.style.display = 'block';
             addToHomeScreenButton.addEventListener('click', () => {
                 addToHomeScreenButton.style.display = 'none';
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the A2HS prompt');
-                    } else {
-                        console.log('User dismissed the A2HS prompt');
-                        addToHomeScreenButton.style.display = 'block';
-                    }
                     deferredPrompt = null;
                 });
             });
         });
 
-
         if (navigator.userAgent.match(/iPad|iPhone|iPod/i)) {
             iosInstructions.style.display = 'block';
-            addToHomeScreenButton.style.display = 'none'; // Hide the button on iOS
+            addToHomeScreenButton.style.display = 'none';
         }
 
         if (window.matchMedia('(display-mode: standalone)').matches) {
@@ -85,4 +102,5 @@
         }
     </script>
 </body>
+
 </html>
