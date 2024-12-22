@@ -7,27 +7,36 @@
     <title>ජයෝදා රියදුරු පාසල</title>
     <link rel="manifest" href="manifest.json">
     <style>
+        /* Basic styling */
+        
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 0;
             padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f7f7f7;
         }
+        /* Add to Home Screen button styling */
         
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 15px 30px;
+            font-size: 18px;
             background-color: #007bff;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         button:hover {
             background-color: #0056b3;
         }
+        /* Hidden iframe styling */
         
         iframe {
             display: none;
@@ -48,7 +57,7 @@
         const addToHomeScreenButton = document.getElementById('addToHomeScreen');
         const iframe = document.getElementById('webApp');
 
-        // Listen for the beforeinstallprompt event
+        // Listen for the beforeinstallprompt event (For Android and Windows)
         window.addEventListener('beforeinstallprompt', (event) => {
             event.preventDefault(); // Prevent automatic prompt
             deferredPrompt = event; // Save the event for later use
@@ -70,10 +79,17 @@
                     }
                     deferredPrompt = null; // Clear the prompt
                 });
+            } else if (navigator.userAgent.includes('Safari') && !deferredPrompt) {
+                alert('On iOS, please use Safari’s "Share" button and select "Add to Home Screen".');
             } else {
-                alert('Add to Home Screen is not supported on this device.');
+                alert('Add to Home Screen is not supported on this browser.');
             }
         });
+
+        // Detect device and adjust instructions
+        if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+            addToHomeScreenButton.textContent = 'Add to Home Screen (Use Share)';
+        }
     </script>
 </body>
 
