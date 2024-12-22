@@ -1,68 +1,58 @@
 <!DOCTYPE html>
-<html lang="si">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ජයෝදා රියදුරු පාසල</title>
-
-  <!-- PWA Manifest File -->
-  <link rel="manifest" href="/manifest.json">
-  
-  <!-- Icons -->
-  <link rel="icon" href="icon-192x192.png" sizes="192x192">
-  <link rel="icon" href="icon-512x512.png" sizes="512x512">
-
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192x192.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    /* Add some styling to the "Add to Home Screen" button */
-    #add-to-home-screen {
-      padding: 10px 20px;
+    #addToHomeScreen { /* Add to Home Screen button එකේ style */
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
       background-color: #007bff;
       color: white;
-      border: none;
-      font-size: 16px;
-      cursor: pointer;
+      padding: 10px 20px;
       border-radius: 5px;
-      display: none; /* Initially hidden */
-    }
-    #add-to-home-screen:active {
-      background-color: #0056b3;
+      cursor: pointer;
     }
   </style>
-
 </head>
 <body>
-  <h1>Welcome to ජයෝදා රියදුරු පාසල</h1>
-  
-  <!-- Add to Home Screen Button -->
-  <button id="add-to-home-screen">බාගත කරන්න</button>
+  <h1>ජයෝදා රියදුරු පාසල</h1>
+  <p>මෙම වෙබ් අඩවිය ජයෝදා රියදුරු පාසලට අයත් වේ.</p>
+  <div id="addToHomeScreen">Add to Home Screen</div>
 
   <script>
-    // Check if the browser supports PWA features
-    if ('serviceWorker' in navigator && 'BeforeInstallPromptEvent' in window) {
-      let deferredPrompt;
-      const addBtn = document.getElementById('add-to-home-screen');
-      
-      // Show the "Add to Home Screen" button when ready
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        addBtn.style.display = 'block'; // Show the button
+    let deferredPrompt;
+    const addBtn = document.getElementById('addToHomeScreen');
 
-        // When the user clicks the button
-        addBtn.addEventListener('click', () => {
-          deferredPrompt.prompt(); // Show the install prompt
-          
-          deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-              console.log('User added to home screen');
-            } else {
-              console.log('User dismissed the prompt');
-            }
-            deferredPrompt = null;
-          });
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      deferredPrompt = e;
+      // Update UI notify the user they can install the PWA
+      addBtn.style.display = 'block';
+
+      addBtn.addEventListener('click', (e) => {
+        // Hide the install button
+        addBtn.style.display = 'none';
+        // Show the install prompt
+        deferredPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the A2HS prompt');
+          } else {
+            console.log('User dismissed the A2HS prompt');
+          }
+          deferredPrompt = null;
         });
       });
-    }
+    });
   </script>
 </body>
 </html>
