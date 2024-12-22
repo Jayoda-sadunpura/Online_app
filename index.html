@@ -6,7 +6,7 @@
   <link rel="apple-touch-icon" href="icon-192x192.png">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    #addToHomeScreen { /* Add to Home Screen button එකේ style */
+    #addToHomeScreen {
       display: none;
       position: fixed;
       bottom: 20px;
@@ -30,19 +30,13 @@
     const addBtn = document.getElementById('addToHomeScreen');
 
     window.addEventListener('beforeinstallprompt', (e) => {
-      // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
-      // Stash the event so it can be triggered later.
       deferredPrompt = e;
-      // Update UI notify the user they can install the PWA
       addBtn.style.display = 'block';
 
       addBtn.addEventListener('click', (e) => {
-        // Hide the install button
         addBtn.style.display = 'none';
-        // Show the install prompt
         deferredPrompt.prompt();
-        // Wait for the user to respond to the prompt
         deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
             console.log('User accepted the A2HS prompt');
@@ -53,6 +47,19 @@
         });
       });
     });
+
+    // Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js') // Path එක හරියට දෙන්න
+          .then((registration) => {
+            console.log('Service Worker registered:', registration);
+          })
+          .catch((error) => {
+            console.error('Service Worker registration failed:', error);
+          });
+      });
+    }
   </script>
 </body>
 </html>
