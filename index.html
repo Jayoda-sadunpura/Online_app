@@ -36,7 +36,9 @@
         }
         
         #addToHomeScreen,
-        #downloadInstructionsButton {
+        #downloadInstructionsButton,
+        #viewVideoButton {
+            /* Added style for new button */
             background-color: #007bff;
             color: white;
             padding: 10px 20px;
@@ -48,7 +50,9 @@
         @media all and (display-mode: standalone) {
             #addToHomeScreen,
             #instructions,
-            #downloadInstructionsButton {
+            #downloadInstructionsButton,
+            #viewVideoButton {
+                /* Hide the new button in standalone mode too */
                 display: none;
             }
         }
@@ -63,6 +67,7 @@
         <p>පහත "බාගත කරන්න" button එක එබීමෙන් මෙම වෙබ් යෙදුම ඔබගේ උපාංගයේ Home Screen එකට එක් කරගත හැක.</p>
     </div>
     <button id="downloadInstructionsButton">බාගත කරගන්නා ආකාරය පිළිබඳව</button>
+    <button id="viewVideoButton">මෙම පිලිබදව video පටය නරබන්න</button>
     <button id="addToHomeScreen">බාගත කරන්න</button>
     <div id="iosInstructions" style="display: none;">
         ඔබගේ iPhone/iPad එකේ Home Screen එකට මෙය එක් කිරීමට:<br> 1. Share icon එක (ඉහළට ඊතලයක් සහිත කොටුව) tap කරන්න.<br> 2. "Add to Home Screen" තෝරන්න.
@@ -72,6 +77,7 @@
         const iosInstructions = document.getElementById('iosInstructions');
         const addToHomeScreenButton = document.getElementById('addToHomeScreen');
         const downloadInstructionsButton = document.getElementById('downloadInstructionsButton');
+        const viewVideoButton = document.getElementById('viewVideoButton'); // Get the new button
         let deferredPrompt;
 
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -79,10 +85,12 @@
             deferredPrompt = e;
             addToHomeScreenButton.style.display = 'block';
             downloadInstructionsButton.style.display = 'block';
+            viewVideoButton.style.display = 'block'; // Show the new button
             window.deferredPrompt = deferredPrompt;
             addToHomeScreenButton.addEventListener('click', () => {
                 addToHomeScreenButton.style.display = 'none';
                 downloadInstructionsButton.style.display = 'none';
+                viewVideoButton.style.display = 'none'; // Hide the new button
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
                     deferredPrompt = null;
@@ -95,10 +103,15 @@
             window.location.href = 'instructions.html';
         });
 
+        viewVideoButton.addEventListener('click', () => { // Event listener for the new button
+            window.open("YOUR_YOUTUBE_VIDEO_LINK", "_blank"); // Open link in new tab
+        });
+
         if (navigator.userAgent.match(/iPad|iPhone|iPod/i)) {
             iosInstructions.style.display = 'block';
             addToHomeScreenButton.style.display = 'none';
             downloadInstructionsButton.style.display = 'none';
+            viewVideoButton.style.display = 'none'; // Hide the new button on iOS
         }
 
         if (window.matchMedia('(display-mode: standalone)').matches) {
