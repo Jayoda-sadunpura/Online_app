@@ -18,27 +18,26 @@
             flex-direction: column;
             align-items: center;
         }
-        
+
         #appIcon {
             width: 100px;
             height: 100px;
             margin-bottom: 10px;
         }
-        
+
         #appTitle {
             font-size: 2em;
             margin-bottom: 10px;
         }
-        
+
         #instructions {
             margin-bottom: 20px;
             padding: 0 20px;
         }
-        
+
         #addToHomeScreen,
         #downloadInstructionsButton,
         #viewVideoButton {
-            /* Added style for new button */
             background-color: #007bff;
             color: white;
             padding: 10px 20px;
@@ -46,15 +45,20 @@
             cursor: pointer;
             margin-bottom: 10px;
         }
-        
+
         @media all and (display-mode: standalone) {
             #addToHomeScreen,
             #instructions,
             #downloadInstructionsButton,
             #viewVideoButton {
-                /* Hide the new button in standalone mode too */
                 display: none;
             }
+        }
+
+        /* New button styles */
+        #iosInstructions {
+            display: none;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -68,29 +72,32 @@
     </div>
     <button id="downloadInstructionsButton">බාගත කරගන්නා ආකාරය පිළිබඳව</button>
     <button id="viewVideoButton">මෙම පිලිබදව video පටය නරබන්න</button>
-    <button id="addToHomeScreen">බාගත කරන්න</button>
-    <div id="iosInstructions" style="display: none;">
+    <button id="addToHomeScreen" style="display: none;">බාගත කරන්න</button>
+
+    <div id="iosInstructions">
         ඔබගේ iPhone/iPad එකේ Home Screen එකට මෙය එක් කිරීමට:<br> 1. Share icon එක (ඉහළට ඊතලයක් සහිත කොටුව) tap කරන්න.<br> 2. "Add to Home Screen" තෝරන්න.
     </div>
+
     <script>
         const thunkableLink = "https://thunkable.site/w/Ka6rgFo2vNc_hI1T9NsBs";
         const iosInstructions = document.getElementById('iosInstructions');
         const addToHomeScreenButton = document.getElementById('addToHomeScreen');
         const downloadInstructionsButton = document.getElementById('downloadInstructionsButton');
-        const viewVideoButton = document.getElementById('viewVideoButton'); // Get the new button
+        const viewVideoButton = document.getElementById('viewVideoButton');
         let deferredPrompt;
 
+        // Handle before install prompt for PWA
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
             addToHomeScreenButton.style.display = 'block';
             downloadInstructionsButton.style.display = 'block';
-            viewVideoButton.style.display = 'block'; // Show the new button
+            viewVideoButton.style.display = 'block';
             window.deferredPrompt = deferredPrompt;
             addToHomeScreenButton.addEventListener('click', () => {
                 addToHomeScreenButton.style.display = 'none';
                 downloadInstructionsButton.style.display = 'none';
-                viewVideoButton.style.display = 'none'; // Hide the new button
+                viewVideoButton.style.display = 'none';
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
                     deferredPrompt = null;
@@ -99,25 +106,30 @@
             });
         });
 
+        // Download instructions button
         downloadInstructionsButton.addEventListener('click', () => {
             window.location.href = 'instructions.html';
         });
 
-        viewVideoButton.addEventListener('click', () => { // Event listener for the new button
-            window.open("https://youtu.be/xnmjEs-WCB0?si=WK7vBAtr7rzpFCbi", "_blank"); // Open link in new tab
+        // View video button
+        viewVideoButton.addEventListener('click', () => {
+            window.open("https://youtu.be/xnmjEs-WCB0?si=WK7vBAtr7rzpFCbi", "_blank");
         });
 
+        // Show instructions for iOS devices
         if (navigator.userAgent.match(/iPad|iPhone|iPod/i)) {
             iosInstructions.style.display = 'block';
             addToHomeScreenButton.style.display = 'none';
             downloadInstructionsButton.style.display = 'none';
-            viewVideoButton.style.display = 'none'; // Hide the new button on iOS
+            viewVideoButton.style.display = 'none';
         }
 
+        // Handle standalone mode and redirect
         if (window.matchMedia('(display-mode: standalone)').matches) {
             window.location.href = thunkableLink;
         }
 
+        // Register service worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/service-worker.js');
